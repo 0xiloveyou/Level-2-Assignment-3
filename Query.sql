@@ -52,7 +52,8 @@ CREATE TABLE Bookings (
     seat_number VARCHAR(10),
     payment_status VARCHAR(15) 
     CHECK( payment_status in ('Pending', 'Confirmed', 'Cancelled', 'Refunded') OR payment_status IS NULL),
-    total_cost DECIMAL(10,5),
+    total_cost DECIMAL(10,5)
+    CHECK (total_cost > 0),
     UNIQUE(match_id, seat_number)
     
 );
