@@ -115,7 +115,7 @@ from bookings where payment_status is null
 -- Query 4
 --Retrieve match booking details along with the User's full name
 -- and the scheduled Match fixture teams.
-select booking_id, full_name, fixture, total_cost from bookings
+select booking_id, full_name, fixture, round(total_cost) from bookings
   inner join users using(user_id)
    inner join matches using(match_id)
 
