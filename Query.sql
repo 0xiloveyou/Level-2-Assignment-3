@@ -15,48 +15,44 @@ DROP TABLE IF EXISTS Users;
 -- =========================================================================
 CREATE TABLE Users (
     user_id SERIAL PRIMARY KEY,
-    full_name VARCHAR(50),
-    email VARCHAR(50),
-    role VARCHAR(20),
+    full_name VARCHAR(60) NOT NULL,
+    email VARCHAR(60) UNIQUE NOT NULL,
+    role VARCHAR(20) NOT NULL
+    CHECK (role in('Football Fan', 'Ticket Manager')),
     phone_number VARCHAR(15),
     
-    -- Write your constraint to make 'user_id' the Primary Key
-    -- Write your constraint to ensure 'email' values are never duplicated
-    -- Write your check constraint to restrict 'role' to specific allowed strings
 );
 
 -- =========================================================================
 -- 2. CREATE MATCHES TABLE
 -- =========================================================================
 CREATE TABLE Matches (
-    match_id SERIAL PRIMARY KEY,
-    fixture VARCHAR(40),
-    tournament_category VARCHAR(40),
-    base_ticket_price DECIMAL(10,5) CHECK (base_ticket_price > 0),
-    match_status VARCHAR(20),
+    match_id INT PRIMARY KEY,
+    fixture VARCHAR(100) NOT NULL,
+    tournament_category VARCHAR(50) NOT NULL,
+    base_ticket_price DECIMAL(10,5) NOT NULL CHECK (base_ticket_price > 0),
+    match_status VARCHAR(20) NOT NULL
+    CHECK (match_status in ('Available', 'Selling Fast', 'Sold Out', 'Postponed')),
     
-    -- Write your constraint to make 'match_id' the Primary Key
-    -- Write your check constraint to prevent negative ticket prices
-    -- Write your check constraint to restrict 'match_status' values
 );
 
 -- =========================================================================
 -- 3. CREATE BOOKINGS TABLE
 -- =========================================================================
 CREATE TABLE Bookings (
-    booking_id SERIAL INT, -- Unique tracking transaction number
-    user_id INT REFERECE Users(user_id),
-    match_id INT REFERECE Matches(match_id),
+    booking_id SERIAL PRIMARY KEY, -- Unique tracking transaction number
+    CONSTRAINT Fk_BookingTable_User_Id
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+
+    CONSTRAINT Fk_BookingTable_Match_Id
+    FOREIGN KEY (match_id) REFERENCES matches(match_id)
     seat_number VARCHAR(10),
-    payment_status VARCHAR(20),
+    payment_status VARCHAR(20)
+    CHECK( payment_status in
+    ('Pending', 'Confirmed', 'Cancelled', 'Refunded') OR payment_status IS NULL),
     total_cost DECIMAL(10,5),
-    PRIMARY KEY(booking_id, user_id, match_id)
+    UNIQUE(match_id, seat_number)
     
-    -- Write your constraint to make 'booking_id' the Primary Key
-    -- Write your Foreign Key constraint linking 'user_id' to the Users table
-    -- Write your Foreign Key constraint linking 'match_id' to the Matches table
-    -- Write your check constraint to ensure 'total_cost' is non-negative
-    -- Write your check constraint to restrict 'payment_status' values
 );
 
 
