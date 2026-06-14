@@ -1,8 +1,6 @@
 -- =========================================================================
 -- SYSTEM: Football Ticket Booking System Database Setup Template
--- DESCRIPTION: Pseudo-DDL Template for Table Creation & Data Insertion
--- INSTRUCTIONS: Replace 'TYPE' and the constraint placeholders with your own
---               actual data types, relational keys, and check criteria.
+
 -- =========================================================================
 
 -- DROP TABLES IF THEY ALREADY EXIST TO PREVENT CONFLICTS
@@ -15,11 +13,11 @@ DROP TABLE IF EXISTS Users;
 -- =========================================================================
 CREATE TABLE Users (
     user_id SERIAL PRIMARY KEY,
-    full_name VARCHAR(60) NOT NULL,
-    email VARCHAR(60) UNIQUE NOT NULL,
-    role VARCHAR(20) NOT NULL
+    full_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    role VARCHAR(20) NOT NULL 
     CHECK (role in('Football Fan', 'Ticket Manager')),
-    phone_number VARCHAR(15),
+    phone_number VARCHAR(15)
     
 );
 
@@ -30,9 +28,10 @@ CREATE TABLE Matches (
     match_id INT PRIMARY KEY,
     fixture VARCHAR(100) NOT NULL,
     tournament_category VARCHAR(50) NOT NULL,
-    base_ticket_price DECIMAL(10,5) NOT NULL CHECK (base_ticket_price > 0),
-    match_status VARCHAR(20) NOT NULL
-    CHECK (match_status in ('Available', 'Selling Fast', 'Sold Out', 'Postponed')),
+    base_ticket_price DECIMAL(10,5) NOT NULL 
+    CHECK (base_ticket_price > 0),
+    match_status VARCHAR(20) NOT NULL 
+    CHECK (match_status in ('Available', 'Selling Fast', 'Sold Out', 'Postponed'))
     
 );
 
@@ -40,16 +39,19 @@ CREATE TABLE Matches (
 -- 3. CREATE BOOKINGS TABLE
 -- =========================================================================
 CREATE TABLE Bookings (
-    booking_id SERIAL PRIMARY KEY, -- Unique tracking transaction number
+    booking_id INT PRIMARY KEY, -- Unique tracking transaction number
+    user_id INT NOT NULL,
+    match_id INT NOT NULL,
+
     CONSTRAINT Fk_BookingTable_User_Id
     FOREIGN KEY (user_id) REFERENCES users(user_id),
 
     CONSTRAINT Fk_BookingTable_Match_Id
-    FOREIGN KEY (match_id) REFERENCES matches(match_id)
+    FOREIGN KEY (match_id) REFERENCES matches(match_id),
+
     seat_number VARCHAR(10),
-    payment_status VARCHAR(20)
-    CHECK( payment_status in
-    ('Pending', 'Confirmed', 'Cancelled', 'Refunded') OR payment_status IS NULL),
+    payment_status VARCHAR(15) 
+    CHECK( payment_status in ('Pending', 'Confirmed', 'Cancelled', 'Refunded') OR payment_status IS NULL),
     total_cost DECIMAL(10,5),
     UNIQUE(match_id, seat_number)
     
