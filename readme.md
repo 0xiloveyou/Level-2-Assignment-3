@@ -17,6 +17,8 @@ The project demonstrates:
 ---
 
 # Entity Relationship Diagram (ERD)
+
+![ERD Diagram](https://raw.githubusercontent.com/0xiloveyou/Level-2-Assignment-3/cec8a085a238f685a5d28bf308fe51d9ff6a6aae/ERD%20Diagram.png)
 ---
 
 ## Entities
