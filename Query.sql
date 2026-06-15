@@ -1,3 +1,4 @@
+
 -- =========================================================================
 -- SYSTEM: Football Ticket Booking System Database Setup Template
 -- =========================================================================
@@ -91,7 +92,7 @@ INSERT INTO Bookings (booking_id, user_id, match_id, seat_number, payment_status
 -- Query 1
 -- Retrieve all upcoming football matches belonging to the 'Champions League'
 -- where the match status is 'Available'.
-select match_id, fixture, base_ticket_price from matches where tournament_category = 'Champions League' and match_status = 'Available'
+select match_id, fixture, round(base_ticket_price) from matches where tournament_category = 'Champions League' and match_status = 'Available'
 
 -- Query 2
 --  Search for all users whose full names start with 'Tanvir' 
@@ -116,7 +117,7 @@ select booking_id, full_name, fixture, round(total_cost) from bookings
 -- ensuring that fans who have never bought a ticket are still listed.
 
 select user_id, full_name, booking_id
-from users full join bookings using(user_id);
+from users left join bookings using(user_id);
 
 -- Query 6
 --Find all ticket bookings where the total cost is strictly 
