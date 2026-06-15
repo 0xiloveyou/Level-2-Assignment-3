@@ -1,7 +1,7 @@
 -- =========================================================================
 -- SYSTEM: Football Ticket Booking System Database Setup Template
-
 -- =========================================================================
+
 
 -- DROP TABLES IF THEY ALREADY EXIST TO PREVENT CONFLICTS
 DROP TABLE IF EXISTS Bookings;
@@ -103,6 +103,7 @@ select match_id, fixture, base_ticket_price from matches where tournament_catego
 -- replacing the empty result with 'Action Required'.
 select booking_id, user_id, match_id, coalesce(payment_status, 'Action Required') as systematic_status
 from bookings where payment_status is null
+
 -- Query 4
 --Retrieve match booking details along with the User's full name
 -- and the scheduled Match fixture teams.
