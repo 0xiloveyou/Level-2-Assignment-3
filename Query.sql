@@ -18,7 +18,7 @@ CREATE TABLE Users (
     email VARCHAR(100) UNIQUE NOT NULL,
     role VARCHAR(20) NOT NULL 
     CHECK (role in('Football Fan', 'Ticket Manager')),
-    phone_number VARCHAR(15)
+    phone_number VARCHAR(15) UNIQUE
     
 );
 
@@ -123,7 +123,7 @@ from users left join bookings using(user_id);
 --Find all ticket bookings where the total cost is strictly 
 --higher than the average cost of all ticket bookings.
 select booking_id, match_id, total_cost 
-from bookings  where total_cost > (select round(avg(total_cost)) from bookings)
+from bookings  where total_cost > (select (avg(total_cost)) from bookings)
 
 -- Query 7
 --Retrieve the top 2 most expensive matches sorted by base ticket price, 
